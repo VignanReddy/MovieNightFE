@@ -12,34 +12,40 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
   const fetchEventDetails = async () => {
     try {
       const response = await axios.get(
-        `https://movienight-bz35.onrender.com/events/vote/${eventId}`
+        `http://localhost:4000/events/vote/${eventId}`
       );
       const { selectedMovie } = response.data;
       if (selectedMovie) {
         console.log("entering into setting the stuff");
+
         setHasSelectedMovie(true);
-        return selectedMovie;
-      } else {
-        setHasSelectedMovie(false);
-        return null;
+        // handleWinnerMovie(selectedMovie);
+        // setSelectedMovieTitle(selectedMovie.title);
       }
     } catch (error) {
       console.error("Error fetching event details:", error);
-      return null;
     } finally {
       setLoading(false);
     }
   };
+
+  // Fetch event details when component mounts
+  useEffect(() => {
+    fetchEventDetails();
+  }, [eventId]);
 
   // Function to handle the update request
   const handleUpdate = async () => {
     try {
       console.log("Starting handle update...");
       const response = await axios.put(
-        `https://movienight-bz35.onrender.com/events/${eventId}/update`
+        `http://localhost:4000/events/${eventId}/update`
       );
       console.log(response);
       const selectedMovie = response.data.event.selectedMovie;
+
+      // setSelectedMovieTitle(selectedMovie.title);
+      // setHasSelectedMovie(true);
       return selectedMovie;
     } catch (error) {
       console.error("Error updating event:", error);
@@ -47,25 +53,22 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
     }
   };
 
-  const handleCompletionFlow = async () => {
-    const selectedMovie = await fetchEventDetails();
-    if (!selectedMovie) {
-      const updatedMovie = await handleUpdate();
-      handleWinnerMovie(updatedMovie);
-    } else {
-      handleWinnerMovie(selectedMovie);
-    }
-    console.log("Completed the voting process.");
-  };
-
   const renderer = ({ days, hours, minutes, seconds, completed }) => {
     if (completed) {
       // Set countdownCompleted to true when the countdown completes
       if (!countdownCompleted) {
         setCountdownCompleted(true);
-        handleCompletionFlow().catch((error) => {
-          console.error("Error in handleCompletionFlow:", error);
-        });
+        if (!hasSelectedMovie) {
+          handleUpdate()
+            .then((selectedMovie) => {
+              handleWinnerMovie(selectedMovie);
+            })
+            .catch((error) => {
+              console.error("Error in handleUpdate:", error);
+            });
+        }
+
+        console.log("completed the voting");
       }
 
       // Render a completed state
@@ -96,3 +99,4 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
 }
 
 export default CountDown;
+//

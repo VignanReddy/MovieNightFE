@@ -5,7 +5,7 @@ import CountDown from "../Components/CountDown";
 import MovieCard from "../Components/MovieCard";
 import { FaRegCopy } from "react-icons/fa";
 import { fetchEventDetails } from "../utils/eventUtils";
-import { machineId, machineIdSync } from "node-machine-id";
+import { v4 as uuidv4 } from "uuid";
 
 function Voting() {
   const { eventId } = useParams();
@@ -21,7 +21,7 @@ function Voting() {
     voters: [],
   });
   const [votedMovieId, setVotedMovieId] = useState(null);
-  const [ipAddress, setIpAddress] = useState("");
+  const [uniqueId, setUniqueId] = useState("");
 
   const [selectedMovie, setSelectedMovie] = useState({});
 
@@ -31,19 +31,14 @@ function Voting() {
 
   const handleWinnerMovie = (movie) => {
     setSelectedMovie(movie);
-    console.log(movie);
     setSelectedStatus(true);
-    console.log("In handleWinnerMovie", movie);
   };
 
   useEffect(() => {
-    console.log("executing useeffect for fetching details");
     const fetchData = async () => {
       if (eventId) {
         try {
           await fetchEventDetails(eventId, setEventDetails, setVotedMovieId);
-
-          // Additional operations if needed after fetching event details
         } catch (err) {
           setError(err);
         } finally {
@@ -57,53 +52,44 @@ function Voting() {
 
   useEffect(() => {
     const checkVotingStatus = () => {
-      console.log("executing checkVotingStatus");
       if (eventDetails.votingEndTime) {
         const now = new Date();
         const endTime = new Date(eventDetails.votingEndTime);
         setHasVotingEnded(now > endTime);
 
-        fetchIpAndCheckVote();
+        fetchIdAndCheckVote();
       }
-
-      console.log(eventDetails.votingEndTime);
     };
 
     checkVotingStatus();
   }, [eventDetails]);
 
-  const fetchIpAndCheckVote = async () => {
-    console.log("Exectuing the fetchIpAndCheckVote", eventDetails);
-    try {
-      // const response = await fetch("https://api.ipify.org?format=json");
-      // const data = await response.json();
-      let data = await machineId();
-      setIpAddress(data);
+  const fetchIdAndCheckVote = () => {
+    let id = localStorage.getItem("uniqueId");
+    if (!id) {
+      id = uuidv4();
+      localStorage.setItem("uniqueId", id);
+    }
+    setUniqueId(id);
 
-      console.log(data);
+    const voterRecord = eventDetails.voters.find(
+      (voter) => voter.voterId === id
+    );
 
-      // Check if the IP address has already voted
-      const voterRecord = eventDetails.voters.find(
-        (voter) => voter.voterId === data
-      );
-
-      if (voterRecord) {
-        setVotedMovieId(voterRecord.movieId);
-      }
-    } catch (error) {
-      console.error("Failed to fetch IP address or check vote:", error);
+    if (voterRecord) {
+      setVotedMovieId(voterRecord.movieId);
     }
   };
 
   const handleVote = async (movieId) => {
-    if (votedMovieId) return; // Prevent voting if already voted
+    if (votedMovieId) return;
 
     try {
       await axios.put(
         `https://movienight-bz35.onrender.com/events/${eventId}/upvote`,
         {
           movieId: movieId,
-          ipAddress: ipAddress, // Include the IP address in the request body
+          voterId: uniqueId,
         }
       );
 
