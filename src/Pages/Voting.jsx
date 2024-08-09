@@ -8,7 +8,7 @@ import { fetchEventDetails } from "../utils/eventUtils";
 
 function Voting() {
   const { eventId } = useParams();
-  const link = `https://movienight-bz35.onrender.com/vote/${eventId}`;
+  const link = `https://movienightfe.onrender.com/vote/${eventId}`;
   const [hasVotingEnded, setHasVotingEnded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
