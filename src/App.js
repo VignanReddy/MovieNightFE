@@ -323,7 +323,6 @@ function App() {
             />
           }
         />
-        <Route path="/vote/:eventId" element={<Voting />} />
       </Routes>
 
       <Modal

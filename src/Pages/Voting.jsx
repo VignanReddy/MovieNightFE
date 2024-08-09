@@ -5,6 +5,7 @@ import CountDown from "../Components/CountDown";
 import MovieCard from "../Components/MovieCard";
 import { FaRegCopy } from "react-icons/fa";
 import { fetchEventDetails } from "../utils/eventUtils";
+import { machineId, machineIdSync } from "node-machine-id";
 
 function Voting() {
   const { eventId } = useParams();
@@ -74,15 +75,16 @@ function Voting() {
   const fetchIpAndCheckVote = async () => {
     console.log("Exectuing the fetchIpAndCheckVote", eventDetails);
     try {
-      const response = await fetch("https://api.ipify.org?format=json");
-      const data = await response.json();
-      setIpAddress(data.ip);
+      // const response = await fetch("https://api.ipify.org?format=json");
+      // const data = await response.json();
+      let data = await machineId();
+      setIpAddress(data);
 
-      console.log(data.ip);
+      console.log(data);
 
       // Check if the IP address has already voted
       const voterRecord = eventDetails.voters.find(
-        (voter) => voter.voterId === data.ip
+        (voter) => voter.voterId === data
       );
 
       if (voterRecord) {
