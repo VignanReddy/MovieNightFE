@@ -88,7 +88,7 @@ const History = ({ profile }) => {
     } else {
       console.warn("No profile found in local storage");
     }
-  }, [eventsByUser]);
+  }, []);
 
   console.log(eventsByUser);
   const style = {
