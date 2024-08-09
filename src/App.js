@@ -135,7 +135,7 @@ function App() {
       // Convert genres array to a comma-separated string
       const genreIds = selectedGenres.join(",");
       const response = await fetch(
-        `http://localhost:4000/api/random?genreIds=${genreIds}&count=${
+        `https://movienight-bz35.onrender.com/api/random?genreIds=${genreIds}&count=${
           5 - selectedMovies.length
         }`
       );
