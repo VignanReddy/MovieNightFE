@@ -157,7 +157,7 @@ function Voting() {
           </div>
         ))}
       </div>
-      <div className="md:flex justify-center p-4 items-center">
+      <div className="md:flex justify-center mb-8 items-center">
         <div className="text-white pr-4 flex justify-center">
           Generated Link:
         </div>
@@ -166,7 +166,7 @@ function Voting() {
           <div>
             <a
               href={link}
-              className="text-sm md:text-xl text-[#38cb91] hover:text-[#42f6af] font-semibold underline transition-colors duration-300"
+              className="text-[11px] md:text-xl text-[#38cb91] hover:text-[#42f6af] font-semibold underline transition-colors duration-300"
               target="_blank"
               rel="noopener noreferrer"
             >

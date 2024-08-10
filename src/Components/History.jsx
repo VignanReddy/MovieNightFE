@@ -159,7 +159,7 @@ const History = ({ profile }) => {
           >
             <div className=" font-semibold w-[240px] flex justify-normal items-center">
               <a
-                href={`http://localhost:3000/vote/${event._id}`}
+                href={`https://movienightfe.onrender.com/vote/${event._id}`}
                 target="_blank"
                 className="underline"
               >

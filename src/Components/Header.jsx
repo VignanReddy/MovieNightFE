@@ -105,7 +105,7 @@ const Header = ({
               onClick={() => setProfileClick(!profileClick)}
             >
               <div className="text-white flex items-center justify-center hover:bg-[#3b3b3b] p-2 rounded-md cursor-pointer">
-                <div className="mr-2 flex items-center justify-center w-8 h-8 rounded-full text-xl bg-[#0b3328] text-[#0a8055] font-semibold">
+                <div className="mr flex items-center justify-center w-8 h-8 rounded-full text-xl bg-[#0b3328] text-[#0a8055] font-semibold">
                   {currentProfile?.given_name &&
                     currentProfile?.given_name[0].toLowerCase()}
                 </div>
