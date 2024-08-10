@@ -23,7 +23,6 @@ function MovieElement({
 
   const handleSelected = () => {
     if (selectedMoviesLength < 5) {
-      console.log("Handle selected called");
       setIsSelected(true);
       handleSelectedMovies(id, poster, title, release_date);
     }

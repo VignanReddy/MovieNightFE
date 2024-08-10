@@ -82,7 +82,7 @@ const History = ({ profile }) => {
     if (profileString) {
       const profile = JSON.parse(profileString);
       const userId = profile.userId;
-      console.log(userId);
+
       // You can now use userId as needed, for example:
       getHistory(userId);
     } else {
@@ -90,7 +90,6 @@ const History = ({ profile }) => {
     }
   }, []);
 
-  console.log(eventsByUser);
   const style = {
     backgroundImage:
       "linear-gradient(to right, rgba(0, 123, 255, 0.1), rgba(94, 234, 212, 0.1))",

@@ -5,7 +5,6 @@ import CountDown from "../Components/CountDown";
 import MovieCard from "../Components/MovieCard";
 import { FaRegCopy } from "react-icons/fa";
 import { fetchEventDetails } from "../utils/eventUtils";
-import { v4 as uuidv4 } from "uuid";
 
 function Voting() {
   const { eventId } = useParams();
@@ -21,9 +20,14 @@ function Voting() {
     voters: [],
   });
   const [votedMovieId, setVotedMovieId] = useState(null);
-  const [uniqueId, setUniqueId] = useState("");
-
+  const [ipAddress, setIpAddress] = useState("");
   const [selectedMovie, setSelectedMovie] = useState({});
+
+  // State for managing popup visibility
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+
+  // Grab the profile from localStorage
+  const profile = JSON.parse(localStorage.getItem("profile"));
 
   const isEmptyObject = (obj) => {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
@@ -57,31 +61,32 @@ function Voting() {
         const endTime = new Date(eventDetails.votingEndTime);
         setHasVotingEnded(now > endTime);
 
-        fetchIdAndCheckVote();
+        fetchIpAndCheckVote();
       }
     };
 
     checkVotingStatus();
   }, [eventDetails]);
 
-  const fetchIdAndCheckVote = () => {
-    let id = localStorage.getItem("uniqueId");
-    if (!id) {
-      id = uuidv4();
-      localStorage.setItem("uniqueId", id);
-    }
-    setUniqueId(id);
+  const fetchIpAndCheckVote = async () => {
+    try {
+      const voterRecord = eventDetails.voters.find(
+        (voter) => voter.voterId === profile?.email
+      );
 
-    const voterRecord = eventDetails.voters.find(
-      (voter) => voter.voterId === id
-    );
-
-    if (voterRecord) {
-      setVotedMovieId(voterRecord.movieId);
+      if (voterRecord) {
+        setVotedMovieId(voterRecord.movieId);
+      }
+    } catch (error) {
+      console.error("Failed to fetch IP address or check vote:", error);
     }
   };
 
   const handleVote = async (movieId) => {
+    if (!profile) {
+      triggerLoginPopup();
+      return;
+    }
     if (votedMovieId) return;
 
     try {
@@ -89,7 +94,7 @@ function Voting() {
         `https://movienight-bz35.onrender.com/events/${eventId}/upvote`,
         {
           movieId: movieId,
-          voterId: uniqueId,
+          ipAddress: profile.email,
         }
       );
 
@@ -97,6 +102,13 @@ function Voting() {
     } catch (error) {
       console.error("Error upvoting movie:", error);
     }
+  };
+
+  const triggerLoginPopup = () => {
+    setShowLoginPopup(true);
+    setTimeout(() => {
+      setShowLoginPopup(false);
+    }, 3000); // Hide the popup after 3 seconds
   };
 
   const handleCopy = () => {
@@ -169,6 +181,13 @@ function Voting() {
           </div>
         </div>
       </div>
+
+      {/* Popup Notification */}
+      {showLoginPopup && (
+        <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-md shadow-lg">
+          Please log in to vote
+        </div>
+      )}
     </div>
   );
 }

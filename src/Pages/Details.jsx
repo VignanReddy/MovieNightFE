@@ -179,7 +179,10 @@ function Details({
                     : "hover:cursor-pointer"
                 }`}
               >
-                <Tooltip text="Delete randoms">
+                <Tooltip
+                  text="Delete randoms"
+                  style={{ top: "-28px", left: "10px" }}
+                >
                   <div
                     className={`${
                       randomMovieIds.length === 0

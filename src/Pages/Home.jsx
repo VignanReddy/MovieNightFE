@@ -44,7 +44,6 @@ function Home({ handleHomeCreate, homeCreateClicked, profile, userId }) {
   };
   const [trendingMovies, setTrendingMovies] = useState([]);
   const isEmptyObject = (obj) => {
-    console.log(obj);
     return obj && Object.keys(obj).length === 0;
   };
 
@@ -55,7 +54,6 @@ function Home({ handleHomeCreate, homeCreateClicked, profile, userId }) {
           "https://movienight-bz35.onrender.com/api/trending"
         );
         const fetchedMovies = response.data;
-        console.log(response.data);
 
         setTrendingMovies(fetchedMovies);
       } catch (error) {

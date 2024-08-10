@@ -140,8 +140,6 @@ function App() {
         }`
       );
 
-      console.log(5 - selectedMovies.length);
-
       setCount(5 - selectedMovies.length);
 
       if (!response.ok) {
@@ -317,12 +315,13 @@ function App() {
               movieNightName={movieNightName}
               handleInputChange={(e) => handleInputChange(e, setMovieNightName)}
               handleCreateClick={() => {
-                console.log("Creating movie night with name:", movieNightName);
                 navigate("/details");
               }}
             />
           }
         />
+
+        <Route path="/vote/:eventId" profile={profile} element={<Voting />} />
       </Routes>
 
       <Modal

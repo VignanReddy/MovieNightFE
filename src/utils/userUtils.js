@@ -45,5 +45,4 @@ export const handleLoginSuccess = async (
 
 export const handleLoginFailure = (error, setLoginScuess) => {
   setLoginScuess(false);
-  console.log("Login Failed:", error);
 };

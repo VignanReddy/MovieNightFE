@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaHistory } from "react-icons/fa";
 import { GiFilmSpool } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
@@ -33,10 +33,16 @@ const Header = ({
   const [loginClick, setLoginClick] = useState(false);
   const [profileClick, setProfileClick] = useState(false);
 
+  // Determine the current profile
   const currentProfile =
     profile && !isEmptyObject(profile) ? profile : profileLocal;
 
-  setUserId(currentProfile.userId);
+  useEffect(() => {
+    // Update user ID whenever currentProfile changes
+    if (currentProfile.userId) {
+      setUserId(currentProfile.userId);
+    }
+  }, [currentProfile, setUserId]);
 
   const handleLogout = () => {
     localStorage.removeItem("profile");
@@ -61,16 +67,22 @@ const Header = ({
           <GiFilmSpool className="text-white text-2xl mr-2" />
           <h1 className="text-white md:text-xl font-semibold">Movie Night</h1>
         </div>
-        <div className="flex items-center ">
-          <div
-            className="flex items-center hover:cursor-pointer"
-            onClick={handleHistoryClick}
-          >
-            <FaHistory className="text-gray-300 md:text-xl mr-1" />
-            <h2 className="text-gray-300 md:text-xl font-semibold">History</h2>
-          </div>
+        <div className="flex items-center">
+          {!isEmptyObject(currentProfile) && (
+            <div
+              className="flex items-center hover:cursor-pointer"
+              onClick={handleHistoryClick}
+            >
+              <FaHistory className="text-gray-300 md:text-xl mr-1" />
+              <h2 className="text-gray-300 md:text-xl font-semibold">
+                History
+              </h2>
+            </div>
+          )}
 
-          <div className="text-white ml-2 md:ml-6 md:mr-6">|</div>
+          {!isEmptyObject(currentProfile) && (
+            <div className="text-white ml-2 md:ml-6 md:mr-6">|</div>
+          )}
 
           {isEmptyObject(currentProfile) ? (
             <div
@@ -80,7 +92,7 @@ const Header = ({
               <div>
                 <CgProfile className="text-gray-300 md:text-xl mr-2" />
               </div>
-              <div className=" text-gray-300 md:text-xl rounded-md  flex items-center justify-center">
+              <div className=" text-gray-300 md:text-xl rounded-md flex items-center justify-center">
                 Log in
               </div>
               <div>
@@ -93,19 +105,19 @@ const Header = ({
               onClick={() => setProfileClick(!profileClick)}
             >
               <div className="text-white flex items-center justify-center hover:bg-[#3b3b3b] p-2 rounded-md cursor-pointer">
-                <div className="mr-2 flex items-center justify-center w-6 h-6 rounded-full text-xl bg-[#0b3328] text-[#0a8055] font-semibold">
+                <div className="mr-2 flex items-center justify-center w-8 h-8 rounded-full text-xl bg-[#0b3328] text-[#0a8055] font-semibold">
                   {currentProfile?.given_name &&
                     currentProfile?.given_name[0].toLowerCase()}
                 </div>
-                <div className="font-semibold text-xl flex items-center text-[#d1d5db]">
+                {/* <div className="font-semibold text-xl flex items-center text-[#d1d5db]">
                   {currentProfile?.given_name}
-                </div>
+                </div> */}
               </div>
             </div>
           )}
         </div>
       </div>
-      {loginClick && isEmptyObject(profile) && (
+      {loginClick && isEmptyObject(currentProfile) && (
         <div className="hover:bg-gray-800 cursor-pointer top-20 bottom-0 right-0 absolute bg-gray-700 w-44 h-14 flex justify-center items-center rounded-xl">
           <div className="text-gray-300 mr-2 hover:text-white">
             Sign in with

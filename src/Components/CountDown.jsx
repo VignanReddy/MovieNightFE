@@ -12,12 +12,10 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
   const fetchEventDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/events/vote/${eventId}`
+        `https://movienight-bz35.onrender.com/events/vote/${eventId}`
       );
       const { selectedMovie } = response.data;
       if (selectedMovie) {
-        console.log("entering into setting the stuff");
-
         setHasSelectedMovie(true);
         // handleWinnerMovie(selectedMovie);
         // setSelectedMovieTitle(selectedMovie.title);
@@ -37,11 +35,10 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
   // Function to handle the update request
   const handleUpdate = async () => {
     try {
-      console.log("Starting handle update...");
       const response = await axios.put(
-        `http://localhost:4000/events/${eventId}/update`
+        `https://movienight-bz35.onrender.com/events/${eventId}/update`
       );
-      console.log(response);
+
       const selectedMovie = response.data.event.selectedMovie;
 
       // setSelectedMovieTitle(selectedMovie.title);
@@ -67,8 +64,6 @@ function CountDown({ endTime, eventId, handleWinnerMovie }) {
               console.error("Error in handleUpdate:", error);
             });
         }
-
-        console.log("completed the voting");
       }
 
       // Render a completed state

@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export const fetchEventDetails = async (id, setEventDetails) => {
-  console.log("Executing the fetchEventDetails");
   try {
     const response = await axios.get(
       `https://movienight-bz35.onrender.com/events/vote/${id}`
@@ -16,8 +15,6 @@ export const fetchEventDetails = async (id, setEventDetails) => {
 
     // Update state with event details
     setEventDetails(fetchedEventDetails);
-
-    console.log("Fetched event details:", fetchedEventDetails);
   } catch (error) {
     console.error("Error fetching event details:", error);
     // Return a rejected promise to indicate failure
@@ -56,9 +53,8 @@ export const fetchSuggestions = async (
 ) => {
   setLoading(true);
   try {
-    console.log(selectedGenres);
     let url = `https://movienight-bz35.onrender.com/api/search-movies?query=${searchQuery}&genres=${selectedGenres}`;
-    console.log(url);
+
     const response = await fetch(
       `https://movienight-bz35.onrender.com/api/search-movies?query=${searchQuery}&genres=${selectedGenres}`
     );
@@ -193,8 +189,6 @@ export const addMoviesToState = (
 ) => {
   // Create a set of existing movie IDs for quick lookup
   const existingMovieIds = new Set(selectedMovieIds);
-
-  console.log("after deleting entering into adding new");
 
   //if randomly selected movies are there in the list
 

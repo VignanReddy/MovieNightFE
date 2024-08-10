@@ -52,7 +52,10 @@ function MovieList({
           <div className="pl-2 text-xs text-gray-400">movies selected</div>
         </div>
         <div className="ml-2">
-          <Tooltip text="Clear all movies">
+          <Tooltip
+            text="Clear all Movies"
+            style={{ top: "-28px", left: "10px" }}
+          >
             <MdOutlineClearAll
               className="text-2xl text-gray-300 hover:text-gray-50 hover:cursor-pointer"
               onClick={handleMovieListClear}
