@@ -157,27 +157,32 @@ function Voting() {
           </div>
         ))}
       </div>
-      <div className="md:flex justify-center mb-8 items-center">
-        <div className="text-white pr-4 flex justify-center">
-          Generated Link:
+      <div className=" justify-center mb-8 items-center">
+        <div className="flex justify-center text-gray-500 font-serif">
+          Share the link with your friends to be voted on:
         </div>
 
         <div className="flex justify-center items-center">
-          <div>
-            <a
-              href={link}
-              className="text-[11px] md:text-xl text-[#38cb91] hover:text-[#42f6af] font-semibold underline transition-colors duration-300"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {link}
-            </a>
-          </div>
-          <div className="pl-2">
-            <FaRegCopy
-              className="text-white md:text-xl hover:text-2xl"
-              onClick={handleCopy}
-            />
+          <div className="flex items-center">
+            <div>
+              {/* <div className="text-white pr-4 flex justify-center">
+                Generated Link:
+              </div> */}
+              <a
+                href={link}
+                className="text-[11px] md:text-xl text-[#38cb91] hover:text-[#42f6af] font-semibold underline transition-colors duration-300"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {link}
+              </a>
+            </div>
+            <div className="pl-2">
+              <FaRegCopy
+                className="text-white md:text-xl hover:text-2xl"
+                onClick={handleCopy}
+              />
+            </div>
           </div>
         </div>
       </div>
